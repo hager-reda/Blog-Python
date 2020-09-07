@@ -1,0 +1,34 @@
+{% load static %}
+
+        <div class="row">
+          	<div class="col-12">
+            	<div class="view" style="background-image: url({% static 'img/read.jpg' %}); background-repeat: no-repeat; background-size: cover; background-position: center center;">	
+              		<div class="mask rgba-gradient align-items-center">
+                		<div class="container">
+                  			<div class="row">
+                    			<div class="col-md-6 primary-text text-center text-md-left mt-xl-5 mb-5 wow fadeInLeft ml-md-4" data-wow-delay="0.3s">
+                      				<h1 class="h1-responsive text-white font-weight-bold mt-sm-5">Welcome to our blog </h1>
+                      				<hr class="hr-light">
+                      				<h5 class="mb-5 text-white ">Lorem ipsum dolor sit amet, 
+                        			<br>consectetur adipisicing elit. 
+                        			<br>Rem repellendus quasi fuga nesciunt
+                      				dolorum nulla magnam veniam sapiente, 
+                      				<br>fugiat! Commodi sequi non animi ea dolor molestiae
+                      				iste.</h5>
+                    			</div>
+                  			</div>
+                		</div>
+              		</div>
+            	</div>
+          	</div>
+
+        	<div class="col-12">
+            	
+            	<div>
+            		{% block posts %}
+            		{% endblock %}
+            	</div>
+
+
+          	</div>
+    	</div>

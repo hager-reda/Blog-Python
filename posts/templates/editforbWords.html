@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    
+<div class="card-body m-5">
+	<h3>Edit Word</h3>
+	<form method="POST">
+		
+			{{form.as_p}}{% csrf_token%}
+		<button type=sumbit >Save</button>
+	</form>
+</div>
+
+
+</div>
+{% endblock %}

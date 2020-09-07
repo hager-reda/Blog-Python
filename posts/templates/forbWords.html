@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    
+<div class="card-body m-5">
+	<h3>Add Word</h3>
+	<form method="POST">
+		
+			{{form.as_p}}{% csrf_token%}
+		<button type=sumbit >Save</button>
+	</form>
+</div>
+
+	<table class="table table-sm table-dark">
+		<thead>
+		<tr>
+			<th scope="col">Word</th>
+			<th scope="col">Edit</th>
+			<th scope="col">Delete</th>
+		</tr>
+		{% for Word in badWords %}
+			<tr>
+				<td scope="col">{{Word}}</th>
+				<td scope="col"><a href="/adminForbWords/edit/{{Word.id}}">Edit</a></th>
+				<td scope="col"><a href="/adminForbWords/del/{{Word.id}}">Delete</a></th>
+			</tr>
+			{% endfor %}
+		</thead>
+	</table>
+</div>
+{% endblock %}

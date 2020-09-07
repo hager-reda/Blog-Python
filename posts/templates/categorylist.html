@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+{% block posts %}
+<div class="col-md-7 mt-3 left">
+    <a href="/posts/addcat/" class="btn btn-danger btn-block">Add New Category &rarr;</a>
+</div>
+<div class="col-md-7 mt-3 left">
+<table class="table table-bordered table-hover table-grey" >
+
+	<th>ID</th>
+	<th>Name</th>
+	{% for cat in all_categories  %}
+	<tr>
+		<td>{{cat.id}}</td>
+		<td>{{cat.category_name}}</td>
+		<td> <a href="/posts/editcat/{{cat.id}}" class="btn btn-dark"> Edit</a></td>
+		<td> <a href="/posts/delcat/{{cat.id}}" class="btn btn-danger"> Delete</a></td>
+
+	</tr>
+	{% endfor%}
+</table>
+</div>
+{% endblock %}

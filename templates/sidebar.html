@@ -1,0 +1,56 @@
+
+<div class="bg-dark " style="height: 100%;">
+    <nav id="sidebar">
+    	<div class="container py-5">
+	        <ul class="list-unstyled components mb-5">
+	        	<li class="mb-3">
+	        		<a class="btn btn-dark btn-block" href="{% url 'home' %}"> Home </a>
+	        	</li>
+	            <li class="mb-3">
+	                <a href="/posts" class="btn btn-dark btn-block">Profile</a>
+	            </li>
+	            <li class="mb-3">
+	                <a href="#" class="btn btn-dark btn-block">About</a>
+	            </li>
+	            <li class="active mb-3">
+	                <a href="#homeSubmenu" data-toggle="collapse" class="dropdown-toggle btn btn-dark btn-block"><b>Categories</b></a>
+	                <ul class="collapse list-unstyled" id="homeSubmenu">
+
+
+	                	{% for cat in all_cat %}
+	                    <li class="mt-3">
+	                    	<div class="row">
+		                    		<div class="col-6">
+		                    			<a href='/posts/Category/{{cat.id}}' class="btn btn-dark">{{cat.category_name}}</a>
+		                    		</div>
+		                    	<div class="col-6">
+			                    {% if user.is_authenticated %}
+			                    	<form method="POST" action="/posts/subscribe/{{cat.id}}">
+			                    			{% csrf_token %}
+			                    		<div class="col">
+			                    			{% if cat in sub_cat  %}
+			                    			<input type="hidden" name="subscribe" value="0">
+			                    			<button class="btn btn-danger btn-sm">Unsubscribe</button> 
+			                    			{% else %}
+			                    			<input type="hidden" name="subscribe" value="1">
+			                    			<button class="btn btn-success btn-sm">subscribe</button> 
+			                    			{% endif %}
+			                    		</div>
+			                    	</form>
+
+			                    {% endif %}
+			                </div>
+		                    </div>
+		                </li>
+		                {% endfor %}
+		                    		               
+			                </ul>
+			            </li>
+			            <li>
+			                <a href="#" class="btn btn-dark btn-block">Contact</a>
+			            </li>
+		    </ul>
+    	</div>
+    </nav>
+</div>
+		

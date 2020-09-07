@@ -1,0 +1,80 @@
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel -->
+      <div class="user-panel">
+        <div class="pull-left image">
+          <img src="/static/adminlte/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+          <p> <strong>{% firstof user.get_short_name user.get_username %}</strong>.</p>
+          
+        </div>
+      </div>
+      <!-- search form -->
+      <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>
+      <!-- /.search form -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">MAIN NAVIGATION</li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-dashboard"></i> <span>Categories</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+          
+               <li class="mb-3">
+                          <div class="row">
+                            <div class="col">
+                              <a href="/posts/Category/1" class="btn btn-dark">Sports</a>
+                            </div>
+                            <div class="col">
+                              <button class="btn btn-primary btn-sm" data-toggle="collapse" data-text-alt="unsubscribe">
+                      subscribe
+                    </button>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="mb-3">
+                          <div class="row">
+                            <div class="col">
+                              <a href="/posts/Category/2" class="btn btn-dark">Politics</a>
+                            </div>
+                            <div class="col">
+                              <button class="btn btn-primary btn-sm" data-toggle="collapse" data-text-alt="unsubscribe">
+                      subscribe
+                    </button>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="mb-3">
+                          <div class="row">
+                            <div class="col">
+                              <a href="/posts/Category/3" class="btn btn-dark">Health</a>
+                            </div>
+                            <div class="col">
+                              <button class="btn btn-primary btn-sm" data-toggle="collapse" data-text-alt="unsubscribe">
+                      subscribe
+                    </button>
+                            </div>
+                          </div>
+                        </li>
+
+          </ul>
+        </li>
+        
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+{% block posts %}
+
+<div class="card-body m-5">
+	<h1> New Category</h1>
+	<form  method="POST">{% csrf_token%}
+		{{new_cat.as_p}}
+		<button type=sumbit >Save</button>
+	</form>
+</div>
+{% endblock %}

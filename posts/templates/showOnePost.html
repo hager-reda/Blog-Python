@@ -1,0 +1,417 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block posts %}
+{% load badWordsFilter %}
+<div class="col-md-11 mt-3 left">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title">{{ post.title }}</h2>
+                <p class="card-text text-muted h6">By {{ post.author }} | {{ post.time_created}} </p>
+                <p class="card-text text-muted h6 tagStyle" style="color: blue "><span class="text-primary">Tag:</span> {{post.tag_post}}</p>
+                {% if post.photo %}   
+                <div class="text-center">
+                    <img src="{{post.photo.url}}" width="350" height="300" class="img-fluid rounded my-3"> 
+                    </div>
+                {% else %}
+                    <p></p>
+                {% endif %}
+                <p class="card-text text-justify">{{post.content }}</p>
+            </div>
+        </div>
+{% if user.is_authenticated %}
+    <div class="card card-body bg-light mb-5">
+        <div class="row text-center" id="dolike">
+            <div class="col" style="position: relative;">
+                <div style="position: absolute;bottom: 0; margin-bottom: 20%; margin-left: 33%;" id="showImg">
+                    <img src="{% static 'img/like.png' %}" width="50px" height="50px" id="showlike">
+                    <img src="{% static 'img/dislike.png' %}" width="50px" height="50px" id="showdislike">
+                </div>
+                <a data-toggle="collapse" href="" id="none"> likes</a>
+                <p>
+                    <span id="like" class="mr-2">{{likescount}}likes </span> 
+                    <span id="dislike">{{dislikescount}}dislikes</span>
+                </p>
+            </div>
+
+            <a class="col" data-toggle="collapse" href="#com{{post.id}}" id="count"> {{comments.count}}Comments </a>
+            <a class="col" data-toggle="collapse" href="#addcom"> Add Comment </a>
+        </div>
+    </div>
+    <div class="collapse pl-3" id="com{{post.id}}">
+        {% for comment in comments %}
+            <div class="card card-body">
+                <div>
+                    <div class="commentid">
+                        <h4><strong>{{comment.userId}}</strong></h4>
+                        <p class="card-text text-muted tagStyle">
+                            {{comment.commentTime|naturaltime}}
+                        </p>
+                    </div>
+                    <div class="commenttext">{{comment.commentText|badWordsFilter:forbWords}}</div>
+                </div>
+                <p>
+                    <a class="ml-2 mt-1" data-toggle="collapse" href="#rep{{comment.id}}" id="repcount{{comment.id}}"> Replys </a>
+                </p>
+
+                <div class="collapse" id="rep{{comment.id}}">
+                    <div  class="appendRep{{comment.id}}">
+                    {% for reply in replys %}
+                    {% if comment.id == reply.commentId_id %}
+                        <div class="card card-body">
+                            <div class="replyid">{{reply.userId}}</div>
+                            <div class="replytext">{{reply.replyText|badWordsFilter:forbWords}}</div>
+                            <div class="replytime">{{reply.replyTime|naturaltime}}</div>
+                        </div>
+                    {% endif %}
+                    {% endfor %}
+
+                        <div class="card card-body">
+                            <div class="replyid"></div>
+                            <div class="replytext"></div>
+                            <div class="replytime"></div>
+                        </div>
+                    </div>
+
+                    <form>
+                        <textarea rows="1" cols="40" id="reptextarea{{comment.id}}"></textarea> 
+                        <br>
+                        <button id="repBtn{{comment.id}}">reply</button>
+                    </form>
+                </div>
+
+            </div>
+        {% endfor %}
+        <div class="append">
+            <div  class="card card-body">
+                    <div>
+                        <div class="commentid"></div>
+                        <div class="commenttext"></div>
+                        <div class="commenttime"></div>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card card-body collapse" id="addcom">
+        <form method="post" style="margin-top: 1.3em;" id="post">
+            <p>leave a comment:</p>
+            <textarea rows="3" cols="40" id="textarea"></textarea> 
+            <br>
+            <button type="submit" class="btn btn-primary  btn-sm" id="commentBtn" style="width:23rem;">Submit</button>
+        </form>
+    </div>
+{% else %}
+    <div class="card card-body">
+        <div class="row text-center" id="dolike">
+            <div class="col" style="position: relative;">
+                <p>
+                    <span id="like" class="mr-2">{{likescount}}likes </span> 
+                    <span id="dislike">{{dislikescount}}dislikes</span>
+                </p>
+            </div>
+
+            <a class="col" data-toggle="collapse" href="#com{{post.id}}" id="count"> {{comments.count}}Comments </a>
+            <a class="col" data-toggle="collapse"> Add Comment </a>
+        </div>
+    </div>
+
+
+    <div class="collapse pl-3" id="com{{post.id}}">
+        {% for comment in comments %}
+            <div class="card card-body">
+                <div>
+                    <div class="commentid">{{comment.userId}}</div>
+                    <div class="commenttext">{{comment.commentText|badWordsFilter:forbWords}}</div>
+                    <div class="commenttime">{{comment.commentTime|naturaltime}}</div>
+                </div>
+                <p>
+                    <a class="ml-2" data-toggle="collapse" href="#rep{{comment.id}}" id="repcount{{comment.id}}"> Replys </a>
+                </p>
+
+                <div class="collapse" id="rep{{comment.id}}">
+                    <div  class="appendRep{{comment.id}}">
+                    {% for reply in replys %}
+                    {% if comment.id == reply.commentId_id %}
+                        <div class="card card-body">
+                            <div class="replyid">{{reply.userId}}</div>
+                            <div class="replytext">{{reply.replyText|badWordsFilter:forbWords}}</div>
+                            <div class="replytime">{{reply.replyTime|naturaltime}}</div>
+                        </div>
+                        <a class="col" data-toggle="collapse"> Add Comment </a>
+                    {% endif %}
+                    {% endfor %}
+
+                    </div>
+                    
+                </div>
+
+            </div>
+        {% endfor %}
+    </div>
+
+
+    <div class="text-danger">**You must login to add a comment or reply</div>
+{% endif %}
+</div>
+
+
+
+<script type="text/javascript">
+    add = document.querySelector('.append').lastElementChild
+    add.style.display="none"
+
+    sendReply()
+    sendComment()
+    addLike()
+
+    function sendReply()
+    {
+        {% for comment in comments %}
+            repBtn{{comment.id}} = document.querySelector('#repBtn{{comment.id}}')
+            reptextarea{{comment.id}} = document.querySelector('#reptextarea{{comment.id}}')
+            repcount{{comment.id}} = document.querySelector('#repcount{{comment.id}}')
+
+            add{{comment.id}} = document.querySelector('.appendRep{{comment.id}}').lastElementChild
+            append{{comment.id}} = document.querySelector('.appendRep{{comment.id}}')
+            add{{comment.id}}.style.display="none"
+
+
+            repBtn{{comment.id}}.addEventListener('click', (ev) => 
+            {
+                ev.preventDefault()
+                url = "/posts/reply/?post={{post.id}}&comment={{comment.id}}&text=" + reptextarea{{comment.id}}.value
+
+                add{{comment.id}} = document.querySelector('.appendRep{{comment.id}}').lastElementChild
+
+                let xhr = new XMLHttpRequest();
+                xhr.open("GET", url)
+                xhr.send();
+
+                xhr.onload = () => {
+                    if (xhr.status === 200) 
+                    {
+                        const json = JSON.parse(xhr.response);
+
+                        reptextarea{{comment.id}}.value=""
+                        repcount{{comment.id}}.textContent = json.count+"Replys"
+
+                        let addEl = document.createElement("div")
+                        addEl.setAttribute('class', "card card-body")
+                        append{{comment.id}}.appendChild(addEl)
+
+                        let addid = document.createElement("div")
+                        addid.setAttribute('class', "commentid")
+                        addEl.appendChild(addid)
+
+                        let addtxt = document.createElement("div")
+                        addtxt.setAttribute('class', "commenttext")
+                        addEl.appendChild(addtxt)
+
+                        let addtm = document.createElement("div")
+                        addtm.setAttribute('class', "commenttime")
+                        addEl.appendChild(addtm)
+
+                        addEl.style.display="none"
+                        add{{comment.id}}.style.display="block"
+
+                        add{{comment.id}}.querySelector(".replyid").textContent="{{request.user}}"
+                        add{{comment.id}}.querySelector(".replytext").textContent=json['newReply']
+                        add{{comment.id}}.querySelector(".replytime").textContent='Now..'
+                    } 
+                    else 
+                    {
+                        console.log(xhr.status);
+                    }
+                }
+            });
+        {% endfor %}
+    }
+
+
+    function sendComment()
+    {
+
+        commentBtn.addEventListener('click', (ev) => 
+        {
+            commentBtn = document.querySelector('#commentBtn')
+            textarea = document.querySelector('#textarea')
+            count = document.querySelector('#count')
+            add = document.querySelector('.append').lastElementChild
+            append = document.querySelector('.append')
+            add.style.display="none"
+            
+            ev.preventDefault()
+            url = "/posts/comment/?post=" + `{{post.id}}`+"&text=" + textarea.value
+            // sendComment(url)
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", url)
+            xhr.send();
+
+            xhr.onload = () => {
+                if (xhr.status === 200) 
+                {
+                    const json = JSON.parse(xhr.response);
+
+                    textarea.value=""
+                    count.textContent = json.count+"Comments"
+
+                    let addEl = document.createElement("div")
+                    addEl.setAttribute('class', "card card-body")
+                    append.appendChild(addEl)
+
+                    let addid = document.createElement("div")
+                    addid.setAttribute('class', "commentid")
+                    addEl.appendChild(addid)
+
+                    let addtxt = document.createElement("div")
+                    addtxt.setAttribute('class', "commenttext")
+                    addEl.appendChild(addtxt)
+
+                    let addtm = document.createElement("div")
+                    addtm.setAttribute('class', "commenttime")
+                    addEl.appendChild(addtm)
+
+                    addEl.style.display="none"
+                    add.style.display="block"
+
+                    add.querySelector(".commentid").textContent=`{{request.user}}`
+                    add.querySelector(".commenttext").textContent=json['newComment']
+                    add.querySelector(".commenttime").textContent='Now..'
+                } 
+                else 
+                {
+                    console.log(xhr.status);
+                }
+            }
+
+        });
+    }
+
+    function addLike()
+    {
+        console.log( `{{urlike}}` )
+        showImg = document.querySelector("#showImg")
+        showlike = document.querySelector("#showlike")
+        showdislike = document.querySelector("#showdislike")
+        none = document.querySelector("#none")
+        alike = document.querySelector("#dolike")
+
+                showImg.style.display="none"
+
+            act="none"
+
+            if ( `{{urlike}}` == 'like') 
+            {
+                like.style.color="blue"
+                dislike.style.color="black"
+                act="like"
+            }
+            else if ( `{{urlike}}` == 'dislike' ) 
+            {
+                like.style.color="black"
+                dislike.style.color="red"
+                act="dislike"
+            }
+            else
+            {
+                like.style.color="black"
+                dislike.style.color="black"
+                act="none"
+            }
+
+        showlike.addEventListener('mouseover',(ev)=>{
+            ev.preventDefault()
+            showlike.style.width='70px'
+            showlike.style.height='70px'
+        });
+        showlike.addEventListener('mouseout',(ev)=>{
+            ev.preventDefault()
+            showlike.style.width='40px'
+            showlike.style.height='40px'
+        });
+        showlike.addEventListener('click',(ev)=>{
+            ev.preventDefault()
+            showlike.style.width='70px'
+            showlike.style.height='70px'
+            act = "like"
+            like.style.color="blue"
+            dislike.style.color="black"
+            url = "/posts/like/?post={{post.id}}&like="+act
+            sendLike(url)
+        });
+        showdislike.addEventListener('mouseover',(ev)=>{
+            ev.preventDefault()
+            showdislike.style.width='70px'
+            showdislike.style.height='70px'
+        });
+        showdislike.addEventListener('mouseout',(ev)=>{
+            ev.preventDefault()
+            showdislike.style.width='30px'
+            showdislike.style.height='30px'
+        });
+        showdislike.addEventListener('click',(ev)=>{
+            ev.preventDefault()
+            showdislike.style.width='70px'
+            showdislike.style.height='70px'
+            act = "dislike"
+            like.style.color="black"
+            dislike.style.color="red"
+            url = "/posts/like/?post={{post.id}}&like="+act
+            sendLike(url)
+        });
+
+        alike.addEventListener('mouseover',(ev)=>{
+            ev.preventDefault()
+                showImg.style.display="block"
+        });
+
+        alike.addEventListener('mouseout',(ev)=>{
+            ev.preventDefault()
+                showImg.style.display="none"
+        });
+
+        none.addEventListener('click',(ev)=>{
+            ev.preventDefault()
+            act="none"
+            like.style.color="black"
+            dislike.style.color="black"
+            url = "/posts/like/?post={{post.id}}&like="+act
+            sendLike(url)
+        });
+
+    }
+
+    function sendLike(url)
+    {
+        like = document.querySelector("#like")
+        dislike = document.querySelector("#dislike")
+
+        let xhr = new XMLHttpRequest();
+            xhr.open("GET", url)
+            xhr.send();
+
+            xhr.onload = () => {
+                if (xhr.status === 200) 
+                {
+                    const json = JSON.parse(xhr.response);
+                    like.textContent = json.countlike+"likes" 
+                    dislike.textContent = json.countdislike+"dislikes"
+                } 
+                else 
+                {
+                    console.log(xhr.status);
+                }
+            }
+    }
+
+
+
+</script>
+{% endblock %}
+
+
